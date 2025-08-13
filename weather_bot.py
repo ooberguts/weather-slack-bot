@@ -8,6 +8,7 @@ import os
 import sys
 import json
 import requests
+import pytz
 from datetime import datetime
 from typing import List, Dict, Any
 
@@ -110,7 +111,9 @@ class WeatherBot:
     
     def create_slack_message(self, weather_data: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Create a formatted Slack message with weather data"""
-        current_time = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+        # Use Mountain Time (handles DST automatically)
+        mountain_tz = pytz.timezone('America/Denver')
+        current_time = datetime.now(mountain_tz).strftime("%B %d, %Y at %I:%M %p %Z")
         
         blocks = [
             {
@@ -148,21 +151,23 @@ class WeatherBot:
             else:
                 # Include coordinates as a subtle reference
                 location_text = f"{data['emoji']} *{data['display_name']}*"
-                if data['location'] != data['city']:
-                    location_text += f"\n_Search: {data['location']}_"
+                #if data['location'] != data['city']:
+                    #location_text += f"\n_Search: {data['location']}_"
                 
                 blocks.append({
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
                         "text": (
-                            f"{location_text}\n"
+                            #f"{location_text}\n"
                             f"*Condition:* {data['description']}\n"
-                            f"*Temperature:* {data['temperature']['celsius']}°C ({data['temperature']['fahrenheit']}°F)\n"
-                            f"*Feels Like:* {data['feels_like']['celsius']}°C ({data['feels_like']['fahrenheit']}°F)\n"
+                            #f"*Temperature:* {data['temperature']['celsius']}°C ({data['temperature']['fahrenheit']}°F)\n"
+                            f"*Temperature:* {data['temperature']['fahrenheit']}°F ({data['temperature']['celsius']}°C)\n"
+                            #f"*Feels Like:* {data['feels_like']['celsius']}°C ({data['feels_like']['fahrenheit']}°F)\n"
+                            f"*Feels Like:* {data['feels_like']['fahrenheit']}°F) ({data['feels_like']['celsius']}°C)\n"
                             f"*Humidity:* {data['humidity']}%\n"
                             f"*Wind Speed:* {data['wind_speed']} m/s\n"
-                            f"_📍 {data['coordinates']['lat']:.2f}, {data['coordinates']['lon']:.2f}_"
+                            #f"_📍 {data['coordinates']['lat']:.2f}, {data['coordinates']['lon']:.2f}_"
                         )
                     }
                 })
