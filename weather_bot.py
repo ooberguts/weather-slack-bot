@@ -159,7 +159,7 @@ class WeatherBot:
                     "text": {
                         "type": "mrkdwn",
                         "text": (
-                            #f"{location_text}\n"
+                            f"{location_text}\n"
                             f"*Condition:* {data['description']}\n"
                             #f"*Temperature:* {data['temperature']['celsius']}°C ({data['temperature']['fahrenheit']}°F)\n"
                             f"*Temperature:* {data['temperature']['fahrenheit']}°F ({data['temperature']['celsius']}°C)\n"
