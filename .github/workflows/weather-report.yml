@@ -46,7 +46,7 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         # Use input locations if provided, otherwise use default list
         # Examples: "10001,US" (NYC zip), "London,UK", "Springfield,IL,US"
-        LOCATIONS: ${{ github.event.inputs.locations || '84117,US;84121,US;84101,US;84108,US' }}
+        LOCATIONS: ${{ github.event.inputs.locations || '84660,US;84075,US;' }}
       run: |
         python weather_bot.py
     
